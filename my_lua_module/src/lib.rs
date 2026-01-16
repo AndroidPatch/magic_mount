@@ -7,6 +7,9 @@ mod defs;
 mod restorecon;
 mod utils;
 
+#[unsafe(no_mangle)]
+#[allow(non_snake_case)]
+pub extern "C" fn _init() {}
 
 unsafe extern "C-unwind" fn magic_mount(state: *mut lua_State) -> c_int { unsafe {
     //println!("Hello from Rust!");
