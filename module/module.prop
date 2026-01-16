@@ -1,0 +1,7 @@
+id=magic_mount
+name=Magisk Mount
+version=1
+versionCode=1
+author=Admirepowered,5ec1cff
+description=For build-in mount
+metamodule=1

@@ -1,0 +1,26 @@
+
+use const_format::concatcp;
+pub const ADB_DIR: &str = "/data/adb/";
+pub const WORKING_DIR: &str = concatcp!(ADB_DIR, "ap/");
+pub const BINARY_DIR: &str = concatcp!(WORKING_DIR, "bin/");
+pub const APATCH_LOG_FOLDER: &str = concatcp!(WORKING_DIR, "log/");
+
+pub const AP_OVERLAY_SOURCE: &str = "APatch";
+pub const DAEMON_PATH: &str = concatcp!(ADB_DIR, "apd");
+pub const MODULE_DIR: &str = concatcp!(ADB_DIR, "modules/");
+
+// warning: this directory should not change, or you need to change the code in module_installer.sh!!!
+pub const MODULE_UPDATE_TMP_DIR: &str = concatcp!(ADB_DIR, "modules_update/");
+
+
+pub const SYSTEM_RW_DIR: &str = concatcp!(MODULE_DIR, ".rw/");
+
+pub const TEMP_DIR: &str = "/debug_ramdisk";
+pub const TEMP_DIR_LEGACY: &str = "/sbin";
+
+
+pub const DISABLE_FILE_NAME: &str = "disable";
+pub const SKIP_MOUNT_FILE_NAME: &str = "skip_mount";
+
+
+
