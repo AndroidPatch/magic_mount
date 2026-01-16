@@ -28,6 +28,11 @@ jobs:
           cargo install cargo-ndk
           rustup target install aarch64-linux-android
 
+      - name: Install UPX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y upx-ucl
+      
       - name: Cache Rust
         uses: Swatinem/rust-cache@v2
         with:
@@ -41,6 +46,7 @@ jobs:
         run: |
           mkdir -p build
           cp my_lua_module/target/aarch64-linux-android/release/libmagic_mount.so build/
+          upx --best --lzma --android-shlib build/libmagic_mount.so
           cp module/* build/
 
 
