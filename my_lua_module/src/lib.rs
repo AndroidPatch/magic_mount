@@ -17,7 +17,7 @@ unsafe extern "C-unwind" fn magic_mount(state: *mut lua_State) -> c_int { unsafe
 
 
 
-    magic_mount::magic_mount();
+    let _ = magic_mount::magic_mount();
     lua_pushstring(state, b"Hello from Rust!\0".as_ptr() as *const _);
     1
 }}
@@ -27,7 +27,7 @@ unsafe extern "C-unwind" fn magic_mount(state: *mut lua_State) -> c_int { unsafe
 
 
 #[unsafe(no_mangle)]
-pub unsafe extern "C" fn luaopen_libmagic_mount(L: *mut lua_State) -> c_int { unsafe {
+pub unsafe extern "C" fn luaopen_libmagic_mount(state: *mut lua_State) -> c_int { unsafe {
     
     static INIT: std::sync::Once = std::sync::Once::new();
 
@@ -40,9 +40,9 @@ pub unsafe extern "C" fn luaopen_libmagic_mount(L: *mut lua_State) -> c_int { un
         log::info!("logger initialized");
     });
     
-    lua_newtable(L);
+    lua_newtable(state);
 
-    lua_pushcfunction(L, magic_mount);
-    lua_setfield(L, -2, b"magic_mount\0".as_ptr() as _);
+    lua_pushcfunction(state, magic_mount);
+    lua_setfield(state, -2, b"magic_mount\0".as_ptr() as _);
     1
 }}

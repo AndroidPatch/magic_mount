@@ -16,6 +16,5 @@ anyhow = "1.0"
 rustix = { git = "https://github.com/AndroidPatch/rustix", branch = "main", features = ["all-apis"] }
 
 android_logger = { version = "0.15", default-features = false }
-jwalk = "0.8"
 const_format = "0.2"
 extattr = "1.0"
