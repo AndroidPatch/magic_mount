@@ -8,15 +8,20 @@ return 1
 end
 
 function M.post_fs_data(superkey)
-    info("post_mount_fs called")
+    info("post_fs_data called")
 
     
 end
 
 function M.post_mount(superkey)
     info("post_mount called")
+    if superkey=="kernelsu" then
+        mount_source= "KSU"
+    else
+        mount_source= "APatch"
+    end
     local libmagisk_mount = require("libmagic_mount")
-    libmagisk_mount.magic_mount()
+    libmagisk_mount.magic_mount(mount_source)
 
 end
 function M.service(superkey)

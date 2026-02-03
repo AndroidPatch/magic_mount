@@ -1,4 +1,4 @@
-use crate::defs::{AP_OVERLAY_SOURCE, DISABLE_FILE_NAME, MODULE_DIR, SKIP_MOUNT_FILE_NAME};
+use crate::defs::{DISABLE_FILE_NAME, MODULE_DIR, SKIP_MOUNT_FILE_NAME};
 use crate::magic_mount::NodeFileType::{Directory, RegularFile, Symlink, Whiteout};
 use crate::restorecon::{lgetfilecon, lsetfilecon};
 use crate::utils::ensure_dir_exists;
@@ -414,11 +414,11 @@ fn do_magic_mount<P: AsRef<Path>, WP: AsRef<Path>>(
     Ok(())
 }
 
-pub fn mount_tmp() -> Result<()> {
+pub fn mount_tmp(mount_source: &str) -> Result<()> {
     let tmp_dir = PathBuf::from("/debug_ramdisk");
     log::info!("mount_dir: {}", tmp_dir.display());
     mount(
-        AP_OVERLAY_SOURCE,
+        mount_source,
         &tmp_dir,
         "tmpfs",
         MountFlags::empty(),
@@ -428,18 +428,18 @@ pub fn mount_tmp() -> Result<()> {
     mount_change(&tmp_dir, MountPropagationFlags::PRIVATE).context("make tmp private")?;
     Ok(())
 }
-pub fn magic_mount() -> Result<()> {
+pub fn magic_mount(mount_source: &str) -> Result<()> {
     match collect_module_files()? {
         Some(root) => {
             log::debug!("collected: {:#?}", root);
             let tmp_dir = PathBuf::from(get_work_dir());
             log::info!("mount_dir: {}", tmp_dir.display());
             if tmp_dir.to_string_lossy().contains("ramdisk") {
-                mount_tmp()?;
+                mount_tmp(mount_source)?;
             }
             ensure_dir_exists(&tmp_dir)?;
             mount(
-                AP_OVERLAY_SOURCE,
+                mount_source,
                 &tmp_dir,
                 "tmpfs",
                 MountFlags::empty(),
