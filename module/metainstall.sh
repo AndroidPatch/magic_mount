@@ -4,6 +4,16 @@ export KSU_METAMODULE="magisk_mount"
 install_module
 
 handle_partition() {
+	echo 0 > /dev/null ; true
+}
+
+mark_replace() {
+	replace_target="$1"
+	mkdir -p "$replace_target"
+	setfattr -n trusted.overlay.opaque -v y "$replace_target"
+}
+
+handle_partitions() {
     PARTITION="$1"
     REQUIRE_SYMLINK="$2"
     if [ ! -e "$MODPATH/system/$PARTITION" ]; then
@@ -17,8 +27,8 @@ handle_partition() {
     fi
 }
 
-handle_partition vendor true
-handle_partition system_ext true
-handle_partition product true
-handle_partition odm false
+handle_partitions vendor true
+handle_partitions system_ext true
+handle_partitions product true
+handle_partitions odm false
 
