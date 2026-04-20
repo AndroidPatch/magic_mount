@@ -13,24 +13,23 @@ mark_replace() {
 	setfattr -n trusted.overlay.opaque -v y "$replace_target"
 }
 
-handle_partitions() {
-    PARTITION="$1"
-    REQUIRE_SYMLINK="$2"
-    if [ ! -e "$MODPATH/system/$PARTITION" ]; then
-        # no partition found
-        return;
-    fi
-
-    if [ "$REQUIRE_SYMLINK" = "false" ] || [ -L "/system/$PARTITION" ] && [ "$(readlink -f "/system/$PARTITION")" = "/$PARTITION" ]; then
-        ui_print "- Handle partition /$PARTITION"
-        ln -sf "./system/$PARTITION" "$MODPATH/$PARTITION"
-    fi
-}
-
 install_module
 
-handle_partitions vendor true
-handle_partitions system_ext true
-handle_partitions product true
-handle_partitions odm false
+handle_partitions() {
+	partition="$1"
+	
+	if [ ! -d "$MODPATH/system/$partition" ]; then
+		return
+	fi
+	
+	if [ -L "/system/$partition" ] && [ -d "/$partition" ]; then
+		ui_print "- Handle partition /$partition"
+		ln -sf "./system/$partition" "$MODPATH/$partition"
+	fi
+}
+
+handle_partitions vendor
+handle_partitions system_ext
+handle_partitions product
+handle_partitions odm
 
