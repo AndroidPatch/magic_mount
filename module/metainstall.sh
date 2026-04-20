@@ -1,7 +1,7 @@
 export KSU_HAS_METAMODULE="true"
 export KSU_METAMODULE="magisk_mount"
 
-install_module
+
 
 handle_partition() {
 	echo 0 > /dev/null ; true
@@ -26,6 +26,8 @@ handle_partitions() {
         ln -sf "./system/$PARTITION" "$MODPATH/$PARTITION"
     fi
 }
+
+install_module
 
 handle_partitions vendor true
 handle_partitions system_ext true
